@@ -21,6 +21,7 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
         "nunomaduro/larastan": "^0.3.15",
+        "php-coveralls/php-coveralls": "^2.1",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^7.0",
         "roave/security-advisories": "dev-master",
@@ -69,6 +70,6 @@
         "cs-fix": "phpcbf --standard=psr2 app tests",
         "docs": "php artisan larecipe:docs",
         "test": "phpunit",
-        "ci": "composer run cs && composer run analyze && composer run md && composer run test"
+        "ci": "composer run cs && composer run analyze && composer run md && composer run test -- --coverage-clover build/logs/clover.xml"
     }
 }
