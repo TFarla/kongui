@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2.4",
         "binarytorch/larecipe": "^1.2",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
@@ -68,6 +68,7 @@
         "cs": "phpcs --standard=psr2 app tests",
         "cs-fix": "phpcbf --standard=psr2 app tests",
         "docs": "php artisan larecipe:docs",
-        "ci": "composer run cs && composer run analyze && composer run md"
+        "test": "phpunit",
+        "ci": "composer run cs && composer run analyze && composer run md && composer run test"
     }
 }

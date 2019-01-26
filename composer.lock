@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc5b9fb2df028cbed01d577b88a83db4",
+    "content-hash": "e6f054b1aa00c45b42a4f19df342c17d",
     "packages": [
         {
             "name": "binarytorch/larecipe",
@@ -6564,7 +6564,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1.3"
+        "php": "^7.2.4"
     },
     "platform-dev": []
 }
