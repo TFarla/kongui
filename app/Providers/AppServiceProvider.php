@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Service\KongService;
+use App\Service\KongServiceMemory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton(KongService::class, function () {
+            return new KongServiceMemory();
+        });
     }
 
     /**
