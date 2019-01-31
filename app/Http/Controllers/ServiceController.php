@@ -51,15 +51,46 @@ class ServiceController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return View
+     */
+    public function edit(string $id): View
+    {
+        $service = $this->kongService->getOne($id);
+        if ($service === null) {
+            throw new NotFoundHttpException("Service $id could not be found");
+        }
+
+        return view('services.edit', compact('service'));
+    }
+
+    /**
+     * @param StoreService $request
+     * @param string $id
+     * @return RedirectResponse
+     */
+    public function update(StoreService $request, string $id): RedirectResponse
+    {
+        $service = $this->kongService->getOne($id);
+        if ($service === null) {
+            throw new NotFoundHttpException("Service with id $id not found.");
+        }
+
+        $service->fill($request->validated());
+        $this->kongService->put($service);
+
+        return redirect(route('services.show', ['service' => $service->getId()]));
+    }
+
+    /**
      * @param StoreService $request
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(StoreService $request): RedirectResponse
     {
-        $data = $request->validated();
         $service = new Service();
-        $service->setName($data['name']);
+        $service->fill($request->validated());
         $newService = $this->kongService->create($service);
 
         return redirect(route('services.show', ['service' => $newService->getId()]));

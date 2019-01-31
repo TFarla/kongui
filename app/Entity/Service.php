@@ -8,6 +8,17 @@ namespace App\Entity;
  */
 class Service
 {
+    private static $fillable = [
+        'url',
+        'name',
+        'host',
+        'port',
+        'protocol',
+        'path',
+        'connectTimeout',
+        'writeTimeout',
+        'readTimeout'
+    ];
     /**
      * @var string|null
      */
@@ -52,6 +63,20 @@ class Service
      * @var int|null
      */
     private $writeTimeout;
+
+    public function fill(array $fields): void
+    {
+        foreach ($fields as $name => $value) {
+            if (!in_array($name, static::$fillable)) {
+                throw new \InvalidArgumentException("Field $name is not fillable for a service");
+            }
+
+            $method = "set$name";
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
+    }
 
     /**
      * @return string|null

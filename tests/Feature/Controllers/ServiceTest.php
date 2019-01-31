@@ -141,6 +141,59 @@ class ServiceTest extends TestCase
         $this->get(route('services.show', ['service' => 'none']));
     }
 
+
+    /**
+     * @dataProvider invalidFieldsProvider
+     * @test
+     */
+    public function itShouldValidateUpdate(array $invalidFields): void
+    {
+        $this->expectException(ValidationException::class);
+        $this->signIn();
+        $service = $this->kongService->create(
+            $this->make(Service::class)
+        );
+
+        $newFields = array_merge($service->toArray(), $invalidFields);
+        $this->put(route('services.update', ['service' => $service->getId()]), $newFields);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldThrowANotFoundExceptionOnUpdate(): void
+    {
+        $this->expectException(NotFoundHttpException::class);
+        $this->signIn();
+        /** @var Service $service */
+        $service = $this->make(Service::class);
+        $this->put(route('services.update', ['service' => 'test']), $service->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldUpdate(): void
+    {
+        $this->signIn();
+        $oldService = $this->kongService->create(
+            $this->make(Service::class)
+        );
+
+        $id = $oldService->getId();
+        /** @var Service $service */
+        $service = $this->make(Service::class);
+        $service->setId($id);
+        $this->put(route('services.update', ['service' => $id]), $service->toArray());
+        $updatedService = $this->kongService->getOne($id);
+        $service->setUpdatedAt($updatedService->getUpdatedAt());
+        $service->setCreatedAt($updatedService->getCreatedAt());
+        $this->assertEquals(
+            $service,
+            $updatedService
+        );
+    }
+
     /**
      * @test
      * @throws \Exception
@@ -232,13 +285,35 @@ class ServiceTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function itShouldShowServiceToEdit(): void
+    {
+        $this->signIn();
+        $service = $this->kongService->create($this->make(Service::class));
+        $this->get(route('services.edit', ['service' => $service->getId()]))
+            ->assertSeeText($service->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldThrowNotFoundIfServiceToEditIsNotFound(): void
+    {
+        $this->expectException(NotFoundHttpException::class);
+        $this->signIn();
+        $this->get(route('services.edit', ['service' => 'test']));
+    }
+
     public function routeProvider(): array
     {
         return [
             ['services.index'],
             ['services.create'],
             ['services.store'],
-            ['services.show', ['test']]
+            ['services.show', ['test']],
+            ['services.edit', ['test']],
         ];
     }
 
