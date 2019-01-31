@@ -27,6 +27,10 @@ class Service
     /**
      * @var string|null
      */
+    private $protocol;
+    /**
+     * @var string|null
+     */
     private $path;
     /**
      * @var string|null
@@ -36,6 +40,54 @@ class Service
     private $createdAt;
     /** @var \DateTime|null */
     private $updatedAt;
+    /**
+     * @var int|null
+     */
+    private $connectTimeout;
+    /**
+     * @var int|null
+     */
+    private $readTimeout;
+    /**
+     * @var int|null
+     */
+    private $writeTimeout;
+
+    /**
+     * @return string|null
+     */
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string|null $path
+     */
+    public function setPath(?string $path): void
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'url' => $this->getUrl(),
+            'host' => $this->getHost(),
+            'port' => $this->getPort(),
+            'protocol' => $this->getProtocol(),
+            'createdAt' => $this->getCreatedAt(),
+            'updatedAt' => $this->getUpdatedAt(),
+            'connectTimeout' => $this->getConnectTimeout(),
+            'writeTimeout' => $this->getWriteTimeout(),
+            'readTimeout' => $this->getReadTimeout()
+        ];
+    }
 
     /**
      * @return string|null
@@ -51,6 +103,22 @@ class Service
     public function setId(?string $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 
     /**
@@ -104,33 +172,17 @@ class Service
     /**
      * @return string|null
      */
-    public function getPath(): ?string
+    public function getProtocol(): ?string
     {
-        return $this->path;
+        return $this->protocol;
     }
 
     /**
-     * @param string|null $path
+     * @param string|null $protocol
      */
-    public function setPath(?string $path): void
+    public function setProtocol(?string $protocol): void
     {
-        $this->path = $path;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string|null $name
-     */
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
+        $this->protocol = $protocol;
     }
 
     /**
@@ -163,5 +215,53 @@ class Service
     public function setUpdatedAt(?\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getConnectTimeout(): ?int
+    {
+        return $this->connectTimeout;
+    }
+
+    /**
+     * @param int|null $connectTimeout
+     */
+    public function setConnectTimeout(?int $connectTimeout): void
+    {
+        $this->connectTimeout = $connectTimeout;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getWriteTimeout(): ?int
+    {
+        return $this->writeTimeout;
+    }
+
+    /**
+     * @param int|null $writeTimeout
+     */
+    public function setWriteTimeout(?int $writeTimeout): void
+    {
+        $this->writeTimeout = $writeTimeout;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getReadTimeout(): ?int
+    {
+        return $this->readTimeout;
+    }
+
+    /**
+     * @param int|null $readTimeout
+     */
+    public function setReadTimeout(?int $readTimeout): void
+    {
+        $this->readTimeout = $readTimeout;
     }
 }

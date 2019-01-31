@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Entity\Service;
+use App\Http\Requests\StoreService;
 use App\Service\KongService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -51,16 +51,13 @@ class ServiceController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param StoreService $request
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreService $request): RedirectResponse
     {
-        $data = $this->validate($request, [
-            'name' => ['required', 'string', 'min:3']
-        ]);
-
+        $data = $request->validated();
         $service = new Service();
         $service->setName($data['name']);
         $newService = $this->kongService->create($service);
