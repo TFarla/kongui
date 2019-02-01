@@ -17,11 +17,11 @@ class KongServiceMemory implements KongService
     /**
      * Gets all services
      *
-     * @return Service[]
+     * @return PaginatedResult
      */
-    public function getAll(): array
+    public function getManyServices(): PaginatedResult
     {
-        return $this->services;
+        return new PaginatedResult(collect($this->services), null);
     }
 
     /**
@@ -30,7 +30,7 @@ class KongServiceMemory implements KongService
      * @param string $id
      * @return Service|null
      */
-    public function getOne(string $id): ?Service
+    public function getOneService(string $id): ?Service
     {
         foreach ($this->services as $service) {
             if ($this->matches($id, $service)) {
@@ -58,7 +58,7 @@ class KongServiceMemory implements KongService
      * @return Service
      * @throws \Exception
      */
-    public function create(Service $service): Service
+    public function createService(Service $service): Service
     {
         $newService = clone $service;
         $newService->setId(uniqid('service', true));
@@ -74,7 +74,7 @@ class KongServiceMemory implements KongService
      * @return Service
      * @throws \Exception
      */
-    public function put(Service $service): Service
+    public function putService(Service $service): Service
     {
         $updatedService = clone $service;
         $id = $updatedService->getId();
@@ -92,7 +92,7 @@ class KongServiceMemory implements KongService
      * Deletes a services
      * @param string $id
      */
-    public function delete(string $id): void
+    public function deleteService(string $id): void
     {
         foreach ($this->services as $key => $service) {
             if ($this->matches($id, $service)) {

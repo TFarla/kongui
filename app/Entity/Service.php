@@ -64,6 +64,14 @@ class Service
      */
     private $writeTimeout;
 
+    /**
+     * @return array
+     */
+    public static function getFillable(): array
+    {
+        return static::$fillable;
+    }
+
     public function fill(array $fields): void
     {
         foreach ($fields as $name => $value) {

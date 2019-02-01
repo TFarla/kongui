@@ -14,36 +14,36 @@ class KongServiceMemoryTest extends TestCase
     /** @test */
     public function itShouldGetAll(): void
     {
-        $this->assertEquals([], $this->service->getAll());
+        $this->assertEquals([], $this->service->getManyServices()->getData()->toArray());
     }
 
     /** @test */
     public function itShouldBeAbleToAdd(): void
     {
         $newService = new Service();
-        $addedService = $this->service->create($newService);
-        $this->assertEquals([$addedService], $this->service->getAll());
+        $addedService = $this->service->createService($newService);
+        $this->assertEquals([$addedService], $this->service->getManyServices()->getData()->toArray());
     }
 
     /** @test */
     public function itShouldBeAbleToUpdate(): void
     {
         $service = new Service();
-        $newService = $this->service->create($service);
+        $newService = $this->service->createService($service);
         $newService->setName('something else');
-        $updatedService = $this->service->put($newService);
+        $updatedService = $this->service->putService($newService);
 
         $this->assertNotEquals($newService, $updatedService);
-        $this->assertEquals([$updatedService], $this->service->getAll());
+        $this->assertEquals([$updatedService], $this->service->getManyServices()->getData()->toArray());
     }
 
     /** @test */
     public function itShouldBeAbleToRemove(): void
     {
         $service = new Service();
-        $newService = $this->service->create($service);
-        $this->service->delete($newService->getId());
-        $this->assertNull($this->service->getOne($newService->getId()));
+        $newService = $this->service->createService($service);
+        $this->service->deleteService($newService->getId());
+        $this->assertNull($this->service->getOneService($newService->getId()));
     }
 
 

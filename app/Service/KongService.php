@@ -9,9 +9,9 @@ interface KongService
     /**
      * Gets all services
      *
-     * @return Service[]
+     * @return PaginatedResult
      */
-    public function getAll(): array;
+    public function getManyServices(): PaginatedResult;
 
     /**
      * Gets a single service
@@ -19,7 +19,7 @@ interface KongService
      * @param string $id
      * @return Service|null
      */
-    public function getOne(string $id): ?Service;
+    public function getOneService(string $id): ?Service;
 
     /**
      * Create a new service
@@ -27,7 +27,7 @@ interface KongService
      * @param Service $service
      * @return Service
      */
-    public function create(Service $service): Service;
+    public function createService(Service $service): Service;
 
     /**
      * Updates a service
@@ -35,11 +35,11 @@ interface KongService
      * @param Service $service
      * @return Service
      */
-    public function put(Service $service): Service;
+    public function putService(Service $service): Service;
 
     /**
      * Deletes a services
      * @param string $id
      */
-    public function delete(string $id): void;
+    public function deleteService(string $id): void;
 }

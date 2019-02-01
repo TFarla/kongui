@@ -37,7 +37,8 @@ class ServiceController extends Controller
      */
     public function index(): View
     {
-        $services = $this->kongService->getAll();
+        $paginatedResult = $this->kongService->getManyServices();
+        $services = $paginatedResult->getData()->toArray();
 
         return view('services.index', compact('services'));
     }
@@ -56,7 +57,7 @@ class ServiceController extends Controller
      */
     public function edit(string $id): View
     {
-        $service = $this->kongService->getOne($id);
+        $service = $this->kongService->getOneService($id);
         if ($service === null) {
             throw new NotFoundHttpException("Service $id could not be found");
         }
@@ -71,13 +72,13 @@ class ServiceController extends Controller
      */
     public function update(StoreService $request, string $id): RedirectResponse
     {
-        $service = $this->kongService->getOne($id);
+        $service = $this->kongService->getOneService($id);
         if ($service === null) {
             throw new NotFoundHttpException("Service with id $id not found.");
         }
 
         $service->fill($request->validated());
-        $this->kongService->put($service);
+        $this->kongService->putService($service);
 
         return redirect(route('services.show', ['service' => $service->getId()]));
     }
@@ -91,7 +92,7 @@ class ServiceController extends Controller
     {
         $service = new Service();
         $service->fill($request->validated());
-        $newService = $this->kongService->create($service);
+        $newService = $this->kongService->createService($service);
 
         return redirect(route('services.show', ['service' => $newService->getId()]));
     }
@@ -102,7 +103,7 @@ class ServiceController extends Controller
      */
     public function show(string $service): View
     {
-        $existing = $this->kongService->getOne($service);
+        $existing = $this->kongService->getOneService($service);
         if ($existing === null) {
             throw new NotFoundHttpException();
         }

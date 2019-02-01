@@ -45,7 +45,7 @@ class ServiceTest extends TestCase
          */
         $services = $setupServices();
         foreach ($services as $service) {
-            $this->kongService->create($service);
+            $this->kongService->createService($service);
         }
 
         $this->signIn();
@@ -92,7 +92,7 @@ class ServiceTest extends TestCase
         $response = $this->post(route('services.store'), $service->toArray());
 
         $response->assertRedirect();
-        $this->assertCount(1, $this->kongService->getAll());
+        $this->assertCount(1, $this->kongService->getManyServices()->getData()->toArray());
     }
 
     /**
@@ -150,7 +150,7 @@ class ServiceTest extends TestCase
     {
         $this->expectException(ValidationException::class);
         $this->signIn();
-        $service = $this->kongService->create(
+        $service = $this->kongService->createService(
             $this->make(Service::class)
         );
 
@@ -176,7 +176,7 @@ class ServiceTest extends TestCase
     public function itShouldUpdate(): void
     {
         $this->signIn();
-        $oldService = $this->kongService->create(
+        $oldService = $this->kongService->createService(
             $this->make(Service::class)
         );
 
@@ -185,7 +185,7 @@ class ServiceTest extends TestCase
         $service = $this->make(Service::class);
         $service->setId($id);
         $this->put(route('services.update', ['service' => $id]), $service->toArray());
-        $updatedService = $this->kongService->getOne($id);
+        $updatedService = $this->kongService->getOneService($id);
         $service->setUpdatedAt($updatedService->getUpdatedAt());
         $service->setCreatedAt($updatedService->getCreatedAt());
         $this->assertEquals(
@@ -202,7 +202,7 @@ class ServiceTest extends TestCase
     {
         /** @var Service $service */
         $service = $this->make(Service::class);
-        $service = $this->kongService->create($service);
+        $service = $this->kongService->createService($service);
 
         $this->signIn();
         $response = $this->get(route('services.show', ['service' => $service->getId()]));
@@ -291,7 +291,7 @@ class ServiceTest extends TestCase
     public function itShouldShowServiceToEdit(): void
     {
         $this->signIn();
-        $service = $this->kongService->create($this->make(Service::class));
+        $service = $this->kongService->createService($this->make(Service::class));
         $this->get(route('services.edit', ['service' => $service->getId()]))
             ->assertSeeText($service->getName());
     }
